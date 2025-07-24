@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Find Car For u</title>
+    <style>
+        body {
+            font-family: Arial,sans-serif;
+            background:lightgreen;
+            margin: 0;
+            padding: 0;
+        }
+        header{
+            background-color:darkgreen;
+            padding: 1rem;
+            text-align: center;
+
+        }
+        .container{
+            max-width: 1000px;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            margin-top: 20px;
+            border-radius: 10px;
+            box-shadow: 0;
+
+        }
+        form{
+            display:flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+            align-items: flex-end;
+
+        }
+        label{
+            flex: 1 0 100px;
+        }
+        input, select{
+            padding: 8px;
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid #ccc ;
+        }
+        button{
+            padding: 10px 20px;
+            background-color: darkred;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+
+        }
+        table{
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+
+        }
+        th, td{
+            padding: 10px;
+            border: 1px solid darkolivegreen;
+            text-align: center;
+
+        }
+        th{
+            background-color: darkslateblue;
+
+        }
+        img{
+            max-width: 100px;
+            height: auto;
+            border-radius: 5px; 
+
+        }
+        
+    </style>
+</head>
+<body>
+    <header>
+    <h1>Find Your Budget Car</h1>
+    </header>
+    <div class="container">
+    <form action="/" method="post">
+        <div>
+            <label for="min_Price">Min Price</label>
+            <input type="number" name="min_Price" required>
+        </div>
+        <div>
+            <label for="max_Price">Maximum Price</label>
+            <input type="number" name="max_Price" required>
+        </div>
+        <div>
+            <label for="fuel">Fuel Type:</label>
+            <select name="fuel" id="fuel">
+                <option value="">Any</option>
+                <option value="Petrol">Petrol</option>
+                <option value="Diesel">Diesel</option>
+                <option value="CNG">CNG</option>
+            </select>
+        </div>
+        <div>
+            <label for="Transmission">Transmission Type:</label>
+            <select name="Transmission" id="Transmission">
+                <option value="">Any</option>
+                <option value="Manual">Manual</option>
+                <option value="Automatic">Automatic</option>
+            </select>
+        </div>
+        <div style="flex: 1 0 100%;"></div>
+        <div>
+            <button type="submit">Search</button>
+        </div>
+    </form>
+</div>
+
+       
+
+{% if cars %}
+    <h2>Available cars</h2>
+    <table>
+        <tr>
+            <th>Image</th>
+            <th>Brand</th>
+            <th>Model</th>
+            <th>Price Range</th>
+            <th>Fuel</th>
+            <th>Transmission</th>
+            <th>Seating</th>
+            
+        </tr>
+        {% for car in cars%}
+        <tr>
+            <td><img src="{{car['Image_URL']}}" alt="Car image"></td>
+            <td>{{car['Brand']}}</td>
+            <td>{{car['Model']}}</td>
+            <td>₹{{ "{:,}".format(car['Price_Min']) }} - ₹{{ "{:,}".format(car['Price_Max']) }}</td>
+            <td>{{car['Fuel']}}</td>
+            <td>{{car['Transmission']}}</td>
+            <td>{{car['Seating_Capacity']}}</td>
+            
+        </tr>
+        {% endfor%}
+    </table>
+{% elif request.method == 'POST' %}
+    <p>No Cars found in this Price range.</p>
+{% endif %}
+
+</body>
+</html>
